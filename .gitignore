@@ -30,6 +30,14 @@ frontend/build/
 frontend/.cache/
 frontend/.parcel-cache/
 
+
+# --- Node / Frontend ---
+frontend-energy/node_modules/
+frontend-energy/dist/
+frontend-energy/build/
+frontend-energy/.cache/
+frontend-energy/.parcel-cache/
+
 # --- Coverage ---
 **/coverage/
 **/.coverage

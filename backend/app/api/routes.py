@@ -5,7 +5,9 @@ from typing import List
 import polars as pl
 from app.services.cleaning import get_sales_clean
 from app.services.analytics import compute_kpis, compute_data_quality, compute_timeseries
-from app.models.dto import KpisDto, DataQualityColumnDto, SaledRowDto, TimeSeriesPointDto
+from app.schemas.dto import KpisDto, DataQualityColumnDto, SaledRowDto, TimeSeriesPointDto
+from app.services.energy_data import generate_energy_dataset
+from app.schemas.energy import EnergyTelemetryDto
 
 
 router = APIRouter()
@@ -41,3 +43,13 @@ def rows(limit: int = 50, offset: int = 0, invalid_only: bool = False):
 def raw_rows(limit: int = 20):
     df = load_raw_sales().head(limit)
     return df.to_dicts()
+
+@router.get("/energy/telemetry", response_model=List[EnergyTelemetryDto])
+def energy_telemetry(days: int = 30, interval_minutes: int = 15, sites: int = 4, meters_per_site: int = 6, seed: int = 42):
+    return generate_energy_dataset(
+        days=days,
+        interval_minutes=interval_minutes,
+        sites=sites,
+        meters_per_site=meters_per_site,
+        seed=seed,
+    )
